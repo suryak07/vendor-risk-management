@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card shadow p-4">
+    <h3>Risk Assessment Result</h3>
+
+    <p><strong>Vendor Name:</strong> {{ name }}</p>
+    <p><strong>Risk Score:</strong> {{ score }}</p>
+    <p><strong>Risk Level:</strong> {{ level }}</p>
+
+  <a href="/download/{{ name }}/{{ score }}/{{ level }}"
+   class="btn btn-primary mt-3">
+   Download PDF
+</a>
+
+    <a href="/vendors" class="btn btn-dark mt-3">
+        Go to Dashboard
+    </a>
+</div>
+
+{% endblock %}

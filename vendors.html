@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="mb-4">Risk Analytics Dashboard</h3>
+
+<!-- Metrics -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card-metric bg-low">
+            <h6>Low Risk Vendors</h6>
+            <h3>{{ low }}</h3>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card-metric bg-medium">
+            <h6>Medium Risk Vendors</h6>
+            <h3>{{ medium }}</h3>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card-metric bg-high">
+            <h6>High Risk Vendors</h6>
+            <h3>{{ high }}</h3>
+        </div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card shadow p-3">
+            <h5>Risk Distribution</h5>
+            <canvas id="riskPieChart"
+                    data-low="{{ low }}"
+                    data-medium="{{ medium }}"
+                    data-high="{{ high }}">
+            </canvas>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow p-3">
+            <h5>Vendor Risk Scores</h5>
+            <canvas id="riskBarChart"
+                    data-names='{{ names | tojson }}'
+                    data-scores='{{ scores | tojson }}'>
+            </canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Vendor Table -->
+<div class="card shadow">
+<div class="card-body">
+<table class="table table-hover">
+<tr>
+<th>Name</th>
+<th>Service</th>
+<th>Score</th>
+<th>Risk Level</th>
+</tr>
+
+{% for v in vendors %}
+<tr>
+<td>{{ v[1] }}</td>
+<td>{{ v[2] }}</td>
+<td>{{ v[3] }}</td>
+<td>
+{% if v[4] == "Low" %}
+<span class="badge bg-success">Low</span>
+{% elif v[4] == "Medium" %}
+<span class="badge bg-warning text-dark">Medium</span>
+{% else %}
+<span class="badge bg-danger">High</span>
+{% endif %}
+</td>
+</tr>
+{% endfor %}
+
+</table>
+</div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    // Pie Chart
+    const pieCanvas = document.getElementById("riskPieChart");
+
+    const low = parseInt(pieCanvas.dataset.low);
+    const medium = parseInt(pieCanvas.dataset.medium);
+    const high = parseInt(pieCanvas.dataset.high);
+
+    new Chart(pieCanvas, {
+        type: "pie",
+        data: {
+            labels: ["Low", "Medium", "High"],
+            datasets: [{
+                data: [low, medium, high],
+                backgroundColor: ["green", "orange", "red"]
+            }]
+        }
+    });
+
+    // Bar Chart
+    const barCanvas = document.getElementById("riskBarChart");
+
+    const names = JSON.parse(barCanvas.dataset.names);
+    const scores = JSON.parse(barCanvas.dataset.scores);
+
+    new Chart(barCanvas, {
+        type: "bar",
+        data: {
+            labels: names,
+            datasets: [{
+                label: "Risk Score",
+                data: scores,
+                backgroundColor: "blue"
+            }]
+        }
+    });
+
+});
+</script>
+
+{% endblock %}

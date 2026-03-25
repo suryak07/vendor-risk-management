@@ -1,0 +1,36 @@
+body {
+    background-color: #f4f6f9;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.sidebar {
+    width: 240px;
+    height: 100vh;
+    background: #111827;
+}
+
+.menu-link {
+    display: block;
+    color: #cbd5e1;
+    text-decoration: none;
+    padding: 10px 0;
+    margin-bottom: 10px;
+}
+
+.menu-link:hover {
+    color: white;
+}
+
+.content {
+    background-color: #f9fafb;
+}
+
+.card-metric {
+    border-radius: 15px;
+    padding: 20px;
+    color: white;
+}
+
+.bg-low { background: #16a34a; }
+.bg-medium { background: #f59e0b; }
+.bg-high { background: #dc2626; }
